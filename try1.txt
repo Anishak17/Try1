@@ -1,0 +1,78 @@
+from IPython.display import display, HTML, Image
+Image('expected_plots/plot1.png')
+
+fig2, ax2 = plt.subplots(1,1, figsize=(10,10))
+sns.heatmap(corr1,annot=True,ax=ax2)
+ax2.set_title("Correlation Matrix on Bank Dataset",fontdict={'fontweight':'bold'})
+fig2.savefig('plot2.png',bbox_inches='tight')
+
+display(HTML('<embed src="https://matplotlib.org/stable/api/pyplot_summary.html" height="200" width= "1100" style="filter: grayscale(100%);">'))
+
+display(HTML('<embed src="https://www.google.com/webhp?igu=1" height="200" width= "1100" style="opacity: 0.3;">'))
+
+display(HTML('<embed src="https://seaborn.pydata.org/api.html" height="200" width= "1100">'))
+
+display(HTML('<iframe src="https://www.google.com/webhp?igu=1"> height="100" </iframe>'))
+
+# grouped bar chart
+df2_1=df.groupby(['job','housing'])['y'].count().unstack()
+df2_1.columns = ['h_no','h_yes']
+df2_2=df.groupby(['job','loan'])['y'].count().unstack()
+df2_2.columns = ['l_no','l_yes']
+df2 = pd.concat([df2_1,df2_2],axis=1)
+df2['total'] = df2.sum(axis=1)
+fig3 = df2.sort_values('total',ascending=False)[['h_yes','h_no','l_yes','l_no']].plot.bar()
+plt.xlabel('Job type',fontdict={'fontsize':12})
+plt.ylabel('Count',fontdict={'fontsize':12})
+plt.title('Job and Loan',fontdict={'fontweight':'bold','fontsize':15})
+fig3 = plt.gcf()
+fig3.savefig('plot3.png',bbox_inches='tight')
+
+#linear model plot
+sns.lmplot(data=df, x='balance',y='age',hue='y')
+plt.title('Balance vs Age With Respect To Client Subscription',fontdict={'fontsize':15,'fontweight':'bold'})
+plt.xlabel('Balance',fontdict={'fontsize':12})
+plt.ylabel('Age',fontdict={'fontsize':12})
+fig5=plt.gcf()
+fig5.savefig('plot5.png',bbox_inches='tight')
+
+#histogram
+fig6, ax6 = plt.subplots(1,1, figsize=(10,5))
+df6 = df[df.job.isin(['blue-collar','retired','technician','admin.','management'])].groupby('job')['duration']
+cols = ['blue-collar','retired','technician','admin.','management']
+for var in cols:
+  df6.get_group(var).hist(ax=ax6,grid=False,bins=50,alpha=0.5)
+ax6.legend(cols)
+ax6.set_title('Last Contact Duration - Job Wise',fontdict={'fontsize':15,'fontweight':'bold'})
+ax6.set_xlabel('Duration',fontdict={'fontsize':12})
+fig6.savefig('plot6.png',bbox_inches='tight')
+
+dir(ax6)
+
+import cv2 as cv
+img = cv.imread('/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot7.png')
+plt.imshow(img)
+
+help(df.hist)
+
+fig7, ax7 = plt.subplots(2, 3, figsize=(20,15))
+df7 = df[['balance','day','duration','campaign','pdays', 'previous']]
+for i, var in enumerate(df7):
+    df7[var].hist(ax=np.array(ax7).flatten()[i],grid=False)
+    np.array(ax7).flatten()[i].set_title(var)
+fig7.savefig('plot7.png',bbox_inches='tight')
+
+display(HTML('<embed src="https://matplotlib.org/" width="100%" height="300">'))
+#"https://matplotlib.org/stable/api"
+display(HTML('<embed src="https://seaborn.pydata.org" width="1000" height="300">'))
+%%HTML
+<embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
+
+import shutil, os
+shutil.copy("/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot1.png",'/content/')
+
+import inspect
+help(inspect)
+inspect.getfullargspec(sns.histplot)
+inspect.getsourcelines(evaluate)
+inspect.getsourcelines(evaluate.evaluation)
