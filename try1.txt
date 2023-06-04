@@ -1,3 +1,7 @@
+# wget -O try1.txt "https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt" - runs only in cmd line
+import urllib.request
+urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt", "try1.txt")
+
 from IPython.display import display, HTML, Image
 Image('expected_plots/plot1.png')
 
