@@ -17,6 +17,12 @@ display(HTML('<embed src="https://www.google.com/webhp?igu=1" height="200" width
 display(HTML('<embed src="https://seaborn.pydata.org/api.html" height="200" width= "1100">'))
 
 display(HTML('<iframe src="https://www.google.com/webhp?igu=1"> height="100" </iframe>'))
+%%HTML
+<embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
+
+display(HTML('<embed src="https://matplotlib.org/" width="100%" height="300">'))
+#"https://matplotlib.org/stable/api"
+display(HTML('<embed src="https://seaborn.pydata.org" width="1000" height="300">'))
 
 # grouped bar chart
 df2_1=df.groupby(['job','housing'])['y'].count().unstack()
@@ -65,12 +71,6 @@ for i, var in enumerate(df7):
     df7[var].hist(ax=np.array(ax7).flatten()[i],grid=False)
     np.array(ax7).flatten()[i].set_title(var)
 fig7.savefig('plot7.png',bbox_inches='tight')
-
-display(HTML('<embed src="https://matplotlib.org/" width="100%" height="300">'))
-#"https://matplotlib.org/stable/api"
-display(HTML('<embed src="https://seaborn.pydata.org" width="1000" height="300">'))
-%%HTML
-<embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
 
 import shutil, os
 shutil.copy("/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot1.png",'/content/')
