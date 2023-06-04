@@ -58,12 +58,12 @@ ax6.set_xlabel('Duration',fontdict={'fontsize':12})
 fig6.savefig('plot6.png',bbox_inches='tight')
 
 dir(ax6)
+help(df.hist)
+help(plt.title)
 
 import cv2 as cv
 img = cv.imread('/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot7.png')
 plt.imshow(img)
-
-help(df.hist)
 
 fig7, ax7 = plt.subplots(2, 3, figsize=(20,15))
 df7 = df[['balance','day','duration','campaign','pdays', 'previous']]
