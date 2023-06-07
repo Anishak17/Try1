@@ -2,9 +2,7 @@
 #!git clone https://github.com/Anishak17/Try1 - cmd
 
 import urllib
-urllib.request.urlretrieve("https://tinyurl.com/tcsw1", "try1.txt")
-urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt", "try1.txt")
-
+urllib.request.urlretrieve("https://tinyurl.com/tcsw1", "try1.txt") #"https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt"
 
 #https://raw.githubusercontent.com/Anishak17/Try1/main/T3/T3_innovator%20-%20Copy.ipynb
 #https://raw.githubusercontent.com/Anishak17/Try1/main/T3/try1.ipynb
@@ -14,21 +12,26 @@ urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/mai
 from IPython.display import display, HTML, Image
 Image('expected_plots/plot1.png')
 
-fig2, ax2 = plt.subplots(1,1, figsize=(10,10))
-sns.heatmap(corr1,annot=True,ax=ax2)
-ax2.set_title("Correlation Matrix on Bank Dataset",fontdict={'fontweight':'bold'})
-fig2.savefig('plot2.png',bbox_inches='tight')
-
-
 display(HTML('<embed src="https://matplotlib.org/" width="100%" height="300">'))
 #"https://matplotlib.org/stable/api"
 display(HTML('<embed src="https://seaborn.pydata.org" width="1000" height="300">'))
+display(HTML('<embed src="https://seaborn.pydata.org/api.html" height="200" width= "1100">'))
+display(HTML('<embed src="https://numpy.org/doc/stable/" height="200" width= "1100">'))
 display(HTML('<embed src="https://matplotlib.org/stable/api/pyplot_summary.html" height="200" width= "1100" style="filter: grayscale(100%);">'))
 display(HTML('<embed src="https://www.google.com/webhp?igu=1" height="200" width= "1100" style="opacity: 0.3;">'))
-display(HTML('<embed src="https://seaborn.pydata.org/api.html" height="200" width= "1100">'))
 display(HTML('<iframe src="https://www.google.com/webhp?igu=1"> height="100" </iframe>'))
 %%HTML
 <embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
+
+sns.lineplot(df,x='campaign',y='day',hue='month', hue_order = ['may','apr','jun'],marker="o",ax=ax1)
+ax1.set_title('Number of Campaigns Based on Months',{'fontsize': 15, 'fontweight': 'bold'})
+ax1.set_xlabel('Campaign',fontdict={'fontsize': 12})
+ax1.set_ylabel('Day',fontdict={'fontsize': 12})
+ax1.grid()
+fig1.savefig('plot1.png',bbox_inches='tight')
+
+sns.heatmap(corr1,annot=True,ax=ax2)
+sns.scatterplot(data=df, x= 'campaign',y='duration',hue='month',hue_order=['jan','feb','mar','apr','may'],ax=ax4)
 
 # grouped bar chart
 df2_1=df.groupby(['job','housing'])['y'].count().unstack()
@@ -46,11 +49,6 @@ fig3.savefig('plot3.png',bbox_inches='tight')
 
 #linear model plot
 sns.lmplot(data=df, x='balance',y='age',hue='y')
-plt.title('Balance vs Age With Respect To Client Subscription',fontdict={'fontsize':15,'fontweight':'bold'})
-plt.xlabel('Balance',fontdict={'fontsize':12})
-plt.ylabel('Age',fontdict={'fontsize':12})
-fig5=plt.gcf()
-fig5.savefig('plot5.png',bbox_inches='tight')
 
 #histogram
 fig6, ax6 = plt.subplots(1,1, figsize=(10,5))
@@ -58,31 +56,42 @@ df6 = df[df.job.isin(['blue-collar','retired','technician','admin.','management'
 cols = ['blue-collar','retired','technician','admin.','management']
 for var in cols:
   df6.get_group(var).hist(ax=ax6,grid=False,bins=50,alpha=0.5)
+  #sns.histplot(df6.get_group(var),bins=50,ax=ax6,alpha=0.5,element="step",linewidth=0)
 ax6.legend(cols)
 ax6.set_title('Last Contact Duration - Job Wise',fontdict={'fontsize':15,'fontweight':'bold'})
 ax6.set_xlabel('Duration',fontdict={'fontsize':12})
-fig6.savefig('plot6.png',bbox_inches='tight')
-
-dir(ax6)
-help(df.hist)
-help(plt.title)
-
-import cv2 as cv
-img = cv.imread('/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot7.png')
-plt.imshow(img)
 
 fig7, ax7 = plt.subplots(2, 3, figsize=(20,15))
 df7 = df[['balance','day','duration','campaign','pdays', 'previous']]
 for i, var in enumerate(df7):
     df7[var].hist(ax=np.array(ax7).flatten()[i],grid=False)
     np.array(ax7).flatten()[i].set_title(var)
-fig7.savefig('plot7.png',bbox_inches='tight')
 
+cols8 = df.select_dtypes(exclude="number")
+fig8, ax8 = plt.subplots(3,3,figsize=(20,15))
+plt.suptitle('Normalized Relative Frequency',fontsize=20,fontweight='bold')
+for i,col in enumerate(cols8.columns[:-1]):
+    df8 = df.groupby([col,'y']).apply(len).unstack()
+    df8['rf']=(df8['yes']/df8['yes'].sum())-(df8['no']/df8['no'].sum())
+    sns.barplot(df8[['rf']].T,orient='h',ax=np.array(ax8).flatten()[i])
+    np.array(ax8).flatten()[i].set_title(col)
+    np.array(ax8).flatten()[i].set_ylabel('')
+    
+dir(ax6)
+help(matplotlib.axes.Axes.plot)
+help(df.hist)
+help(plt.Text)
+help(plt.title), help(plt.suptitle)
+help(plt.figure)
+
+import cv2 as cv
+img = cv.imread('/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot7.png')
+plt.imshow(img)
 import shutil, os
 shutil.copy("/content/drive/MyDrive/wingst3-nov21n1-datavisualization/expected_plots/plot1.png",'/content/')
 
 import inspect
 help(inspect)
-inspect.getfullargspec(sns.histplot)
+inspect.getfullargspec(evaluate)
 inspect.getsourcelines(evaluate)
 inspect.getsourcelines(evaluate.evaluation)
