@@ -1,8 +1,11 @@
 # wget -O try1.txt "https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt" - runs only in cmd line
-import urllib.request
+#!git clone https://github.com/Anishak17/Try1 - cmd
+
+import urllib
+urllib.request.urlretrieve("https://tinyurl.com/tcsw1", "try1.txt")
 urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt", "try1.txt")
 
-#!git clone https://github.com/Anishak17/Try1
+
 #https://raw.githubusercontent.com/Anishak17/Try1/main/T3/T3_innovator%20-%20Copy.ipynb
 #https://raw.githubusercontent.com/Anishak17/Try1/main/T3/try1.ipynb
 #https://raw.githubusercontent.com/Anishak17/Try1/main/T3/Question%20(4).ipynb
