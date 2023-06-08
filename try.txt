@@ -1,6 +1,6 @@
 import urllib
 urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt", "try1.txt")
-urllib.request.urlretrieve("https://tinyurl.com/tcsw1","try1.txt")
+urllib.request.urlretrieve("https://tinyurl.com/tcsw1","try1.txt") # https://tinyurl.com/tcsw2
 
 help(plt.Text)
 help(matplotlib.axes.Axes.plot)
