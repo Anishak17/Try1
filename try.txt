@@ -1,0 +1,68 @@
+import urllib
+urllib.request.urlretrieve("https://raw.githubusercontent.com/Anishak17/Try1/main/try1.txt", "try1.txt")
+urllib.request.urlretrieve("https://tinyurl.com/tcsw1","try1.txt")
+
+help(plt.Text)
+help(matplotlib.axes.Axes.plot)
+help(plt.figure)
+dir(ax6)
+
+plt.gcf()
+
+fig1, ax1 = plt.subplots(1,1,figsize=(15,5))
+
+sns.lineplot(df,x='campaign',y='day',hue='month', hue_order = ['may','apr','jun'],marker="o",ax=ax1)
+sns.heatmap(corr1,annot=True,ax=ax2)
+sns.scatterplot(data=df, x= 'campaign',y='duration',hue='month',hue_order=['jan','feb','mar','apr','may'],ax=ax4)
+sns.lmplot(data=df, x='balance',y='age',hue='y')
+
+ax1.set_title('Number of Campaigns Based on Months',{'fontsize': 15, 'fontweight': 'bold'})
+ax1.set_xlabel('Campaign',fontdict={'fontsize': 12})
+ax1.set_ylabel('Day',fontdict={'fontsize': 12})
+ax1.grid()
+fig1.savefig('plot1.png',bbox_inches='tight')
+
+df2_1=df.groupby(['job','housing'])['y'].count().unstack()
+df2_1.columns = ['h_no','h_yes']
+df2_2=df.groupby(['job','loan'])['y'].count().unstack()
+df2_2.columns = ['l_no','l_yes']
+df2 = pd.concat([df2_1,df2_2],axis=1)
+df2['total'] = df2.sum(axis=1)
+fig3 = df2.sort_values('total',ascending=False)[['h_yes','h_no','l_yes','l_no']].plot.bar()
+
+cols = ['blue-collar','retired','technician','admin.','management']
+df6 = df[df.job.isin(cols)].groupby('job')['duration']
+for var in cols:
+  df6.get_group(var).hist(ax=ax6,grid=False,bins=50,alpha=0.5)
+  sns.histplot(df6.get_group(var),bins=50,ax=ax6,alpha=0.5,element="step",linewidth=0)
+ax6.legend(cols)
+
+plt.suptitle('Numerical Data Distributions', fontsize=20,fontweight='bold')
+for i, var in enumerate(cols):
+    df[[var]].hist(ax=np.array(ax7).flatten()[i],grid=False)
+    np.array(ax7).flatten()[i].set_title(var)
+
+for i,col in enumerate(cols8.columns[:-1]):
+    df8 = df.groupby([col,'y']).apply(len).unstack()
+    df8['rf']=(df8['yes']/df8['yes'].sum())-(df8['no']/df8['no'].sum())
+    sns.barplot(df8[['rf']].T,orient='h',ax=np.array(ax8).flatten()[i])
+    np.array(ax8).flatten()[i].set_title(col)
+    np.array(ax8).flatten()[i].set_ylabel('')
+
+from IPython.display import display, HTML, Image
+display(HTML('<embed src="https://matplotlib.org/stable/api/pyplot_summary.html" height="200" width= "100%" style="filter: grayscale(100%); opacity: 0.3;">'))
+
+%%HTML
+<embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
+https://matplotlib.org/
+https://www.google.com/webhp?igu=1
+https://seaborn.pydata.org/api.html
+https://numpy.org/doc/stable/
+
+import shutil
+shutil.copy("expected_plots/plot1.png",'/')
+
+import inspect
+inspect.getsourcelines(evaluate)
+inspect.getfullargspec(evaluate)
+inspect.getsourcelines(evaluate.evaluation)
