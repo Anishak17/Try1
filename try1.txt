@@ -23,9 +23,11 @@ display(HTML('<iframe src="https://www.google.com/webhp?igu=1"> height="100" </i
 %%HTML
 <embed src="https://www.google.com/webhp?igu=1" width="100%" height="300">
 
+fig1, ax1 = plt.subplots(1,1,figsize=(15,5))
 sns.lineplot(df,x='campaign',y='day',hue='month', hue_order = ['may','apr','jun'],marker="o",ax=ax1)
-ax1.set_title('Number of Campaigns Based on Months',{'fontsize': 15, 'fontweight': 'bold'})
-ax1.set_xlabel('Campaign',fontdict={'fontsize': 12})
+# ax1.set(title='Number of Campaigns Based on Months',xlabel='Campaign',ylabel='Day')
+ax1.set_title('Number of Campaigns Based on Months',{'fontsize': 15, 'fontweight': 'bold'}) #ax1.title.set_fontsize(15),ax1.title.set_fontweight('bold')
+ax1.set_xlabel('Campaign',fontdict={'fontsize': 12}) #ax1.xaxis.label.set_fontsize(12)
 ax1.set_ylabel('Day',fontdict={'fontsize': 12})
 ax1.grid()
 fig1.savefig('plot1.png',bbox_inches='tight')
@@ -34,18 +36,16 @@ sns.heatmap(corr1,annot=True,ax=ax2)
 sns.scatterplot(data=df, x= 'campaign',y='duration',hue='month',hue_order=['jan','feb','mar','apr','may'],ax=ax4)
 
 # grouped bar chart
-df2_1=df.groupby(['job','housing'])['y'].count().unstack()
-df2_1.columns = ['h_no','h_yes']
-df2_2=df.groupby(['job','loan'])['y'].count().unstack()
-df2_2.columns = ['l_no','l_yes']
-df2 = pd.concat([df2_1,df2_2],axis=1)
+df2 = (df.groupby(['job', 'housing']).size().unstack().rename(columns={'no': 'h_no', 'yes': 'h_yes'}))
+df2[['l_no', 'l_yes']] = (df.groupby(['job', 'loan']).size().unstack().rename(columns={'no': 'l_no', 'yes': 'l_yes'}))
 df2['total'] = df2.sum(axis=1)
-fig3 = df2.sort_values('total',ascending=False)[['h_yes','h_no','l_yes','l_no']].plot.bar()
-plt.xlabel('Job type',fontdict={'fontsize':12})
-plt.ylabel('Count',fontdict={'fontsize':12})
-plt.title('Job and Loan',fontdict={'fontweight':'bold','fontsize':15})
-fig3 = plt.gcf()
-fig3.savefig('plot3.png',bbox_inches='tight')
+fig, ax = plt.subplots(figsize=(10, 5))
+df2.sort_values('total', ascending=False)[['h_yes', 'h_no', 'l_yes', 'l_no']].plot.bar(ax=ax)
+ax.set_xlabel('Job type', fontsize=12)
+ax.set_ylabel('Count', fontsize=12)
+ax.set_title('Job and Loan', fontweight='bold', fontsize=15)
+plt.savefig('plot3.png', bbox_inches='tight')
+plt.show()
 
 #linear model plot
 sns.lmplot(data=df, x='balance',y='age',hue='y')
@@ -61,21 +61,47 @@ ax6.legend(cols)
 ax6.set_title('Last Contact Duration - Job Wise',fontdict={'fontsize':15,'fontweight':'bold'})
 ax6.set_xlabel('Duration',fontdict={'fontsize':12})
 
-fig7, ax7 = plt.subplots(2, 3, figsize=(20,15))
-df7 = df[['balance','day','duration','campaign','pdays', 'previous']]
-for i, var in enumerate(df7):
-    df7[var].hist(ax=np.array(ax7).flatten()[i],grid=False)
-    np.array(ax7).flatten()[i].set_title(var)
+df6 = df[df.job.isin(cols)]
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.histplot(data=df6, x='duration',stat='count', hue='job', bins=50, element="step", multiple="layer", linewidth=0, alpha=0.5, ax=ax)
+
+import seaborn as sns
+
+# Create a sample DataFrame
+df_6 = pd.DataFrame({
+    'Category': ['A', 'A', 'B', 'B', 'C', 'C'],
+    'Value': [1, 2, 3, 4, 5, 6]
+})
+
+# Plot multiple histograms with different 'multiple' parameter values
+fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+sns.histplot(data=df_6, x='Value', hue='Category', multiple='layer', ax=axs[0, 0])
+axs[0, 0].set_title("Multiple: 'layer'")
+sns.histplot(data=df_6, x='Value', hue='Category', multiple='stack', ax=axs[0, 1])
+axs[0, 1].set_title("Multiple: 'stack'")
+sns.histplot(data=df_6, x='Value', hue='Category', multiple='fill', ax=axs[1, 0])
+axs[1, 0].set_title("Multiple: 'fill'")
+sns.histplot(data=df_6, x='Value', hue='Category', multiple='dodge', ax=axs[1, 1])
+axs[1, 1].set_title("Multiple: 'dodge'")
+plt.tight_layout()
+plt.show()
+
+cols = ['balance', 'day', 'duration', 'campaign', 'pdays', 'previous']
+fig7, ax7 = plt.subplots(2, 3, figsize=(20, 15))
+plt.suptitle('Numerical Data Distributions', fontsize=20, fontweight='bold')
+for ax, var in zip(ax7.flatten(), cols):
+    df[var].hist(ax=ax, grid=False)
+    ax.set_title(var)
 
 cols8 = df.select_dtypes(exclude="number")
-fig8, ax8 = plt.subplots(3,3,figsize=(20,15))
-plt.suptitle('Normalized Relative Frequency',fontsize=20,fontweight='bold')
-for i,col in enumerate(cols8.columns[:-1]):
-    df8 = df.groupby([col,'y']).apply(len).unstack()
-    df8['rf']=(df8['yes']/df8['yes'].sum())-(df8['no']/df8['no'].sum())
-    sns.barplot(df8[['rf']].T,orient='h',ax=np.array(ax8).flatten()[i])
-    np.array(ax8).flatten()[i].set_title(col)
-    np.array(ax8).flatten()[i].set_ylabel('')
+fig8, ax8 = plt.subplots(3, 3, figsize=(20, 15))
+plt.suptitle('Normalized Relative Frequency', fontsize=20, fontweight='bold')
+for ax, col in zip(ax8.flatten(), cols8.columns[:-1]):
+    df8 = df.groupby([col, 'y']).size().unstack()
+    df8['rf'] = (df8['yes'] / df8['yes'].sum()) - (df8['no'] / df8['no'].sum())
+    sns.barplot(data=df8[['rf']].T, orient='h', ax=ax)
+    ax.set_title(col)
+    ax.set_ylabel('')
     
 dir(ax6)
 help(matplotlib.axes.Axes.plot)
